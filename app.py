@@ -73,6 +73,56 @@ HOME_HTML = """
 </html>
 """
 
+# Admin Leads Dashboard Template
+ADMIN_HTML = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kasuwar Kano - Leads Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f6f8; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { color: #1a5276; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; font-size: 14px; }
+        th { background-color: #1a5276; color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .back-btn { display: inline-block; margin-bottom: 15px; color: #1a5276; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-btn">← Back to Main Form</a>
+        <h2>Submitted Leads</h2>
+        {% if leads %}
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Phone Number</th>
+                <th>Interest</th>
+                <th>Date Submitted</th>
+            </tr>
+            {% for lead in leads %}
+            <tr>
+                <td>{{ lead[0] }}</td>
+                <td>{{ lead[1] }}</td>
+                <td><a href="https://wa.me/{{ lead[2] }}" target="_blank">{{ lead[2] }}</a></td>
+                <td>{{ lead[3] }}</td>
+                <td>{{ lead[4] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No leads submitted yet!</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+"""
+
 # Homepage Route
 @app.route('/')
 def home():
@@ -109,9 +159,17 @@ def submit_lead():
     
     return "Error: Please fill in all fields.", 400
 
+# Admin Route to View All Submitted Data
+@app.route('/admin')
+def view_leads():
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, name, phone, interest, created_at FROM leads ORDER BY id DESC")
+    leads = cursor.fetchall()
+    conn.close()
+    return render_template_string(ADMIN_HTML, leads=leads)
+
 # Server Entry Point for Render
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
-
-  
