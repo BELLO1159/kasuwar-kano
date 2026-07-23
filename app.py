@@ -55,7 +55,7 @@ def set_content(key, value):
     conn.commit()
     conn.close()
 
-# Main Homepage Template with Strict Black & White Brand Styling
+# Main Homepage Template with Pink, Black & White Styling + Floating WhatsApp Button
 HOME_HTML = """
 <!DOCTYPE html>
 <html lang="ha">
@@ -67,6 +67,8 @@ HOME_HTML = """
         :root {
             --primary: #ffffff;
             --secondary: #cccccc;
+            --pink: #ff2a85;
+            --pink-hover: #ff55aa;
             --black: #000000;
             --dark-card: #111111;
             --border-color: #333333;
@@ -77,42 +79,63 @@ HOME_HTML = """
         .hero { text-align: center; padding: 40px 20px; max-width: 700px; width: 100%; }
         
         .brand-logo-container { display: flex; justify-content: center; margin-bottom: 15px; }
-        .brand-logo { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); box-shadow: 0 0 25px rgba(255,255,255,0.2); background: #000; }
+        .brand-logo { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; border: 3px solid var(--pink); box-shadow: 0 0 25px rgba(255,42,133,0.3); background: #000; }
 
         .hero h1 { color: var(--primary); font-size: 32px; margin-bottom: 10px; letter-spacing: 1px; }
-        .hero h1 span { color: var(--secondary); border-bottom: 2px solid var(--primary); }
+        .hero h1 span { color: var(--pink); border-bottom: 2px solid var(--pink); }
         .hero p { color: var(--secondary); font-size: 18px; margin-bottom: 30px; font-weight: 300; }
         
         .cta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
-        .cta-btn { background: var(--dark-card); border: 2px solid var(--primary); color: var(--primary); padding: 18px 10px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; text-decoration: none; text-align: center; transition: 0.3s; }
-        .cta-btn:hover { background: var(--primary); color: var(--black); }
+        .cta-btn { background: var(--dark-card); border: 2px solid var(--pink); color: var(--primary); padding: 18px 10px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; text-decoration: none; text-align: center; transition: 0.3s; }
+        .cta-btn:hover { background: var(--pink); color: var(--black); }
 
         .container { max-width: 650px; width: 92%; background: var(--dark-card); padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); margin-bottom: 40px; border: 1px solid var(--border-color); }
-        h2 { color: var(--primary); text-align: center; margin-top: 0; font-size: 22px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        h2 { color: var(--primary); text-align: center; margin-top: 0; font-size: 22px; border-bottom: 2px solid var(--pink); padding-bottom: 10px; }
         
         .gallery-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 25px; }
         .gallery-card { background: #080808; border: 1px solid var(--border-color); border-radius: 10px; overflow: hidden; text-align: center; }
         .gallery-card img { width: 100%; height: 220px; object-fit: cover; border-bottom: 1px solid var(--border-color); }
         .gallery-card p { color: var(--primary); font-size: 15px; font-weight: bold; margin: 12px 0; padding: 0 10px; }
 
-        /* Calculator & Slider Styles */
-        .calc-box { background: #000; border: 1px solid var(--primary); border-radius: 12px; padding: 20px; margin-top: 15px; }
+        /* Calculator Styles */
+        .calc-box { background: #000; border: 1px solid var(--pink); border-radius: 12px; padding: 20px; margin-top: 15px; }
         .calc-box label { color: var(--secondary); font-size: 13px; margin-bottom: 8px; display: block; }
-        .calc-box input[type="range"] { width: 100%; accent-color: var(--primary); cursor: pointer; margin-bottom: 15px; }
-        .calc-result { background: #1a1a1a; padding: 15px; border-radius: 8px; text-align: center; border-left: 4px solid var(--primary); }
-        .calc-result h4 { color: var(--primary); margin: 0 0 5px 0; font-size: 15px; }
+        .calc-box input[type="range"] { width: 100%; accent-color: var(--pink); cursor: pointer; margin-bottom: 15px; }
+        .calc-result { background: #1a1a1a; padding: 15px; border-radius: 8px; text-align: center; border-left: 4px solid var(--pink); }
+        .calc-result h4 { color: var(--pink); margin: 0 0 5px 0; font-size: 15px; }
         .calc-result p { color: var(--primary); margin: 0; font-size: 14px; font-weight: bold; line-height: 1.6; }
 
         label { display: block; text-align: left; font-size: 13px; font-weight: bold; color: var(--secondary); margin-bottom: 6px; }
         input, select, textarea { width: 100%; padding: 14px; margin-bottom: 16px; border-radius: 8px; border: 1px solid var(--border-color); background: #000; color: var(--primary); font-size: 15px; }
-        input:focus, select:focus, textarea:focus { border-color: var(--primary); outline: none; }
+        input:focus, select:focus, textarea:focus { border-color: var(--pink); outline: none; }
         
-        .submit-btn { width: 100%; background-color: var(--primary); color: var(--black); font-weight: 800; padding: 16px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .submit-btn:hover { background-color: var(--secondary); }
+        .submit-btn { width: 100%; background-color: var(--pink); color: var(--primary); font-weight: 800; padding: 16px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .submit-btn:hover { background-color: var(--pink-hover); }
+
+        /* Floating WhatsApp Button */
+        .float-whatsapp {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: #25d366;
+            color: #fff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            z-index: 1000;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+        .float-whatsapp:hover { transform: scale(1.1); }
 
         .footer-info { text-align: center; padding: 30px 20px 60px 20px; color: var(--secondary); font-size: 14px; border-top: 1px solid var(--border-color); width: 100%; max-width: 650px; }
         .footer-info p { margin: 8px 0; }
-        .footer-info a { color: var(--primary); text-decoration: underline; }
+        .footer-info a { color: var(--pink); text-decoration: underline; }
     </style>
     <script>
         function calculateInstallment() {
@@ -130,7 +153,7 @@ HOME_HTML = """
             var outputText = "Jimlar Farashi: ₦" + formattedTotal + "<br>" +
                              "Ajiya (Deposit): ₦" + formattedDeposit + "<br>" +
                              "Tsawon Lokaci: " + months + " Watanni<br>" +
-                             "Biya kowane wata: <span style='color:#ffffff; text-decoration:underline;'>₦" + formattedMonthly + " / wata</span>";
+                             "Biya kowane wata: <span style='color:var(--pink); text-decoration:underline;'>₦" + formattedMonthly + " / wata</span>";
             
             document.getElementById('calcResultText').innerHTML = outputText;
             document.getElementById('budget').value = "Deposit + ₦" + formattedMonthly + "/wata (" + months + " months)";
@@ -168,6 +191,11 @@ HOME_HTML = """
     </script>
 </head>
 <body onload="calculateInstallment()">
+
+    <!-- Floating Persistent WhatsApp Button -->
+    <a href="https://wa.me/2349066073407?text=Assalamu%20Alaikum%20Kasuwar%20Kano,%20Ina%20son%20neman%20karin%20bayani." class="float-whatsapp" target="_blank" title="Tuntube Mu Ta WhatsApp">
+        💬
+    </a>
 
     <div class="hero">
         <div class="brand-logo-container">
@@ -220,7 +248,7 @@ HOME_HTML = """
                 <option value="house">Gida a Hotoro Kureken Sani (Total: ₦17,500,000 | Deposit: ₦8,750,000)</option>
             </select>
 
-            <label>Tsawon Watanni (Months): <span id="monthsVal" style="color:#fff; text-decoration:underline;">12</span> Watanni</label>
+            <label>Tsawon Watanni (Months): <span id="monthsVal" style="color:var(--pink); text-decoration:underline;">12</span> Watanni</label>
             <input type="range" id="monthsRange" min="3" max="24" value="12" step="1" oninput="document.getElementById('monthsVal').innerText=this.value; calculateInstallment();">
             
             <div class="calc-result" id="calc_output">
@@ -267,7 +295,7 @@ HOME_HTML = """
     <div class="footer-info">
         <p>📞 <b>09066073407</b></p>
         <p>📍 <b>Goron Dutse, Maiyari Plaza, Kano</b></p>
-        <p style="margin-top: 15px;"><a href="/admin" style="color: var(--primary); font-size: 13px; font-weight: bold;">🔐 Admin Panel Dashboard</a></p>
+        <p style="margin-top: 15px;"><a href="/admin" style="color: var(--pink); font-size: 13px; font-weight: bold;">🔐 Admin Panel Dashboard</a></p>
     </div>
 
 </body>
@@ -284,13 +312,13 @@ LOGIN_HTML = """
     <title>Admin Login - Kasuwar Kano</title>
     <style>
         body { background-color: #000; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .login-box { background: #111; padding: 40px; border-radius: 16px; border: 1px solid #333; width: 100%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.9); text-align: center; }
-        h2 { color: #fff; margin-top: 0; margin-bottom: 25px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .login-box { background: #111; padding: 40px; border-radius: 16px; border: 1px solid #ff2a85; width: 100%; max-width: 400px; box-shadow: 0 10px 30px rgba(255,42,133,0.2); text-align: center; }
+        h2 { color: #fff; margin-top: 0; margin-bottom: 25px; border-bottom: 2px solid #ff2a85; padding-bottom: 10px; }
         label { display: block; text-align: left; font-size: 13px; font-weight: bold; color: #ccc; margin-bottom: 8px; }
         input { width: 100%; padding: 14px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #444; background: #000; color: #fff; font-size: 15px; box-sizing: border-box; }
-        input:focus { border-color: #fff; outline: none; }
-        button { width: 100%; background-color: #fff; color: #000; font-weight: bold; padding: 14px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; transition: 0.3s; }
-        button:hover { background-color: #ccc; }
+        input:focus { border-color: #ff2a85; outline: none; }
+        button { width: 100%; background-color: #ff2a85; color: #fff; font-weight: bold; padding: 14px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; transition: 0.3s; }
+        button:hover { background-color: #ff55aa; }
         .error { color: #ff4d4d; font-size: 13px; margin-bottom: 15px; }
         .back-link { display: block; margin-top: 20px; color: #888; text-decoration: none; font-size: 13px; }
         .back-link:hover { color: #fff; }
@@ -324,11 +352,11 @@ ADMIN_HTML = """
     <style>
         body { background-color: #000; color: #fff; margin: 0; padding: 30px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; flex-direction: column; align-items: center; }
         .dashboard-container { width: 100%; max-width: 900px; background: #111; padding: 30px; border-radius: 16px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.9); margin-bottom: 30px; }
-        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid #ff2a85; padding-bottom: 15px; }
         h2 { color: #fff; margin: 0; }
         .btn-group { display: flex; gap: 10px; }
-        .action-btn { background: #fff; color: #000; padding: 10px 16px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; border: none; cursor: pointer; transition: 0.3s; }
-        .action-btn:hover { background: #ccc; }
+        .action-btn { background: #ff2a85; color: #fff; padding: 10px 16px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; border: none; cursor: pointer; transition: 0.3s; }
+        .action-btn:hover { background: #ff55aa; }
         .logout-btn { background: #333; color: #fff; }
         .logout-btn:hover { background: #444; }
         
@@ -338,7 +366,7 @@ ADMIN_HTML = """
         label { display: block; font-size: 12px; font-weight: bold; color: #ccc; margin-bottom: 6px; }
         input[type="file"], input[type="text"] { width: 100%; padding: 10px; margin-bottom: 12px; border-radius: 6px; border: 1px solid #444; background: #000; color: #fff; font-size: 13px; box-sizing: border-box; }
         input[type="file"] { padding: 6px; }
-        .preview-img { width: 60px; height: 60px; object-fit: cover; border-radius: 50%; border: 2px solid #fff; margin-top: 5px; }
+        .preview-img { width: 60px; height: 60px; object-fit: cover; border-radius: 50%; border: 2px solid #ff2a85; margin-top: 5px; }
         .preview-box { width: 100%; height: 80px; object-fit: cover; border-radius: 6px; border: 1px solid #444; margin-top: 5px; }
         
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
@@ -346,13 +374,13 @@ ADMIN_HTML = """
         th { color: #fff; background: #080808; }
         td { color: #ccc; }
         .no-data { text-align: center; color: #666; padding: 40px; }
-        .success-msg { background: rgba(255, 255, 255, 0.1); color: #fff; padding: 12px; border-radius: 6px; margin-bottom: 20px; font-weight: bold; text-align: center; border: 1px solid #fff; }
+        .success-msg { background: rgba(255, 42, 133, 0.1); color: #fff; padding: 12px; border-radius: 6px; margin-bottom: 20px; font-weight: bold; text-align: center; border: 1px solid #ff2a85; }
     </style>
 </head>
 <body>
     <div class="dashboard-container">
         <div class="header-row">
-            <h2>🖼️ Upload Properties (Larabar Abasawa & Hotoro)</h2>
+            <h2>🖼️ Upload Properties & Logo</h2>
             <div class="btn-group">
                 <a href="/admin/logout" class="action-btn logout-btn">Logout</a>
             </div>
@@ -405,7 +433,7 @@ ADMIN_HTML = """
                 </div>
             </div>
 
-            <button type="submit" class="action-btn" style="width: 100%; padding: 14px; font-size: 16px; margin-top: 10px;">💾 Save & Update Properties</button>
+            <button type="submit" class="action-btn" style="width: 100%; padding: 14px; font-size: 16px; margin-top: 10px;">💾 Save & Update Website</button>
         </form>
     </div>
 
@@ -435,7 +463,7 @@ ADMIN_HTML = """
                     <td>{{ lead[0] }}</td>
                     <td>{{ lead[9] }}</td>
                     <td style="color: #fff; font-weight: bold;">{{ lead[1] }}</td>
-                    <td><a href="tel:{{ lead[2] }}" style="color: #fff; text-decoration: underline;">{{ lead[2] }}</a></td>
+                    <td><a href="tel:{{ lead[2] }}" style="color: #ff2a85; text-decoration: underline;">{{ lead[2] }}</a></td>
                     <td>{{ lead[4] }}</td>
                     <td>{{ lead[5] }}<br><small style="color: #888;">{{ lead[6] }}</small></td>
                     <td>{{ lead[7] }}</td>
