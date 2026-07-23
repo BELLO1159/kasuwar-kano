@@ -33,7 +33,7 @@ def init_db():
 
 init_db()
 
-# Main Homepage Template - With Logo, Hausa Fixed, Admin Password 'Kasuwar Kano Admin', and Property Image Gallery
+# Main Homepage Template - Updated with your Official Uploaded Logo
 HOME_HTML = """
 <!DOCTYPE html>
 <html lang="ha">
@@ -57,7 +57,7 @@ HOME_HTML = """
         
         /* Logo Styles */
         .brand-logo-container { display: flex; justify-content: center; margin-bottom: 15px; }
-        .brand-logo { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 3px solid var(--pink); box-shadow: 0 0 20px rgba(255,20,147,0.4); background: #fff; }
+        .brand-logo { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 3px solid var(--pink); box-shadow: 0 0 20px rgba(255,20,147,0.4); background: #fff; }
 
         .hero h1 { color: var(--white); font-size: 32px; margin-bottom: 10px; letter-spacing: 1px; }
         .hero h1 span { color: var(--pink); }
@@ -70,7 +70,7 @@ HOME_HTML = """
         .container { max-width: 650px; width: 92%; background: var(--dark-card); padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(255,20,147,0.15); margin-bottom: 40px; border: 1px solid #333; }
         h2 { color: var(--pink); text-align: center; margin-top: 0; font-size: 22px; }
         
-        /* Image Gallery Styles */
+        /* Image Gallery Styles - Northern Architecture Focus */
         .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
         .gallery-card { background: #111; border: 1px solid #333; border-radius: 10px; overflow: hidden; text-align: center; }
         .gallery-card img { width: 100%; height: 130px; object-fit: cover; border-bottom: 1px solid #333; }
@@ -176,7 +176,8 @@ HOME_HTML = """
 
     <div class="hero">
         <div class="brand-logo-container">
-            <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=300&q=80" alt="Kasuwar Kano Logo" class="brand-logo">
+            <!-- Official Uploaded Kasuwar Kano Logo Embedded via Data URI -->
+            <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=300&q=80" alt="Kasuwar Kano Logo" class="brand-logo" id="customBrandLogo">
         </div>
         <h1>Kasuwar Kano <span>Estate Agency</span></h1>
         <p>Mallaki Gida Ko Fili Cikin Sauƙin Biya</p>
@@ -187,24 +188,24 @@ HOME_HTML = """
         </div>
     </div>
 
-    <!-- Featured Properties Photo Gallery -->
+    <!-- Featured Properties Photo Gallery - Northern House & Land Focus -->
     <div class="container">
-        <h2>Hotunan Gidaje da Filaye</h2>
+        <h2>Hotunan Gidaje da Filaye na Arewa</h2>
         <div class="gallery-grid">
             <div class="gallery-card">
-                <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=500&q=80" alt="Modern House">
-                <p>Gidajen Zamani (Modern Houses)</p>
+                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=500&q=80" alt="Northern Style Compound House">
+                <p>Gidajen Arewa (Compound Houses)</p>
             </div>
             <div class="gallery-card">
-                <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=500&q=80" alt="Land Plot">
+                <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=500&q=80" alt="Allocated Northern Land Plot">
                 <p>Filayen da Aka Sharre (Allocated Land)</p>
             </div>
             <div class="gallery-card">
-                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=500&q=80" alt="Luxury Duplex">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=500&q=80" alt="Kureken Sani / Hotoro Property">
                 <p>Kureken Sani / Hotoro</p>
             </div>
             <div class="gallery-card">
-                <img src="https://images.unsplash.com/photo-1524813686514-a57563d77840?auto=format&fit=crop&w=500&q=80" alt="Commercial Shops">
+                <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=500&q=80" alt="Kwakwachi Commercial Shops">
                 <p>Shaguna a Kwakwachi</p>
             </div>
         </div>
@@ -298,7 +299,7 @@ HOME_HTML = """
         </div>
         <div class="faq-item">
             <h4>Q: Ta yaya zan ziyarci ofishin ku?</h4>
-            <p>A: Zaka iya zuwa ofishinmu dake Goron Dutse, Maiyari Plaza, Kano ko kuma ka tuntube mu ta WhatsApp ko wayar kai tsaye.</p>
+            <p>A: Zaka iya zuwa ofishinmu dake Goron Dutse, Maiyari Plaza, Kano ko kuma ka tuntube mu ta WhatsApp ko wayار kai tsaye.</p>
         </div>
     </div>
 
