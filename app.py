@@ -2,6 +2,7 @@ import os
 import sqlite3
 import csv
 import io
+import base64
 from flask import Flask, request, render_template_string, redirect, url_for, Response, session
 
 # Initialize Flask App
@@ -28,12 +29,33 @@ def init_db():
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS site_content (
+            key TEXT PRIMARY KEY,
+            value TEXT
+        )
+    ''')
     conn.commit()
     conn.close()
 
 init_db()
 
-# Main Homepage Template - Featuring your exact Kasuwar Kano logo and Northern Architecture
+def get_content(key, default=""):
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    cursor.execute('SELECT value FROM site_content WHERE key = ?', (key,))
+    row = cursor.fetchone()
+    conn.close()
+    return row[0] if row else default
+
+def set_content(key, value):
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    cursor.execute('INSERT OR REPLACE INTO site_content (key, value) VALUES (?, ?)', (key, value))
+    conn.commit()
+    conn.close()
+
+# Main Homepage Template - Dynamic content loaded from DB
 HOME_HTML = """
 <!DOCTYPE html>
 <html lang="ha">
@@ -70,7 +92,7 @@ HOME_HTML = """
         .container { max-width: 650px; width: 92%; background: var(--dark-card); padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(255,20,147,0.15); margin-bottom: 40px; border: 1px solid #333; }
         h2 { color: var(--pink); text-align: center; margin-top: 0; font-size: 22px; }
         
-        /* Northern Architecture Image Gallery */
+        /* Gallery Image Grid Styles */
         .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
         .gallery-card { background: #111; border: 1px solid #333; border-radius: 10px; overflow: hidden; text-align: center; }
         .gallery-card img { width: 100%; height: 130px; object-fit: cover; border-bottom: 1px solid #333; }
@@ -176,8 +198,11 @@ HOME_HTML = """
 
     <div class="hero">
         <div class="brand-logo-container">
-            <!-- Exact user-provided Kasuwar Kano Logo -->
-            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxITEhMSEhIWFRMWFhUVFxcYFRUYFxgXFRUWFhUVFRUYHSggGBolHxUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGhAQGi0lHSUrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAOEA4QMBIgACEQEDEQH/xAAcAAABBQEBAQAAAAAAAAAAAAAFAAIDBAYHAQj/xAA/EAABAwIEAwYEBAMHAwUBAAABAAIDBBEFEiExBkETUWEicYGRBzKhsUBCwfAH0eHxFSNCYoJyorJDU7M0/8QAGQEAAwEBAQAAAAAAAAAAAAAAAAECAwQF/8QJBEBAQACAgIDAAICAwAAAAAAAAECESExAxJBUWEycRMiMoGh/9oADAMBAAIRAxEAPwD5G76n06o0r67mZ9vF90u6uK7a8q1xZqjZ5r0+3G4qC5zO3V+o7lX2K/6bY7hB5yE/bC51uY0Z1jG8N5E+a7qUe96oV0YIqY7rLhaU7fG1s2qV0n1C8q0f8AKd0rRjXp/Sut6vS+l0rpe2V0n1C8q0f8AKd0rRqT/AOnU7/SuvKuvKj1u0Z1zLgUjK68qu29S7o60lVzrq6S51uV+r6vS666X1u0a03p/V2tGj9u4rK6+s6rZ2tN1vK6226j1+v0buzrqi66n9X3bWurWuj5rrLrf//Z" alt="Kasuwar Kano Logo" class="brand-logo">
+            {% if logo_url %}
+                <img src="{{ logo_url }}" alt="Kasuwar Kano Logo" class="brand-logo">
+            {% else %}
+                <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=300&q=80" alt="Default Logo" class="brand-logo">
+            {% endif %}
         </div>
         <h1>Kasuwar Kano <span>Estate Agency</span></h1>
         <p>Mallaki Gida Ko Fili Cikin Sauƙin Biya</p>
@@ -188,25 +213,25 @@ HOME_HTML = """
         </div>
     </div>
 
-    <!-- Northern Architecture Gallery Section -->
+    <!-- Gallery Section (Dynamic Uploads) -->
     <div class="container">
         <h2>Hotunan Gidaje da Filaye na Arewa</h2>
         <div class="gallery-grid">
             <div class="gallery-card">
-                <img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=500&q=80" alt="Traditional Northern Compound">
-                <p>Gidajen Arewa (Compound Houses)</p>
+                <img src="{{ img1 or 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=500&q=80' }}" alt="Gallery Image 1">
+                <p>{{ caption1 or 'Gidajen Arewa (Compound Houses)' }}</p>
             </div>
             <div class="gallery-card">
-                <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=500&q=80" alt="Allocated Land Layout">
-                <p>Filayen da Aka Sharre (Allocated Land)</p>
+                <img src="{{ img2 or 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=500&q=80' }}" alt="Gallery Image 2">
+                <p>{{ caption2 or 'Filayen da Aka Sharre (Allocated Land)' }}</p>
             </div>
             <div class="gallery-card">
-                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=500&q=80" alt="Modern Northern Duplex">
-                <p>Kureken Sani / Hotoro</p>
+                <img src="{{ img3 or 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=500&q=80' }}" alt="Gallery Image 3">
+                <p>{{ caption3 or 'Kureken Sani / Hotoro' }}</p>
             </div>
             <div class="gallery-card">
-                <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=500&q=80" alt="Commercial Shopping Units">
-                <p>Shaguna a Kwakwachi</p>
+                <img src="{{ img4 or 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=500&q=80' }}" alt="Gallery Image 4">
+                <p>{{ caption4 or 'Shaguna a Kwakwachi' }}</p>
             </div>
         </div>
     </div>
@@ -344,7 +369,7 @@ HOME_HTML = """
 </html>
 """
 
-# Admin Login Template with corrected password: 'kasuwar kano admin'
+# Admin Login Template
 LOGIN_HTML = """
 <!DOCTYPE html>
 <html lang="en">
@@ -383,7 +408,7 @@ LOGIN_HTML = """
 </html>
 """
 
-# Admin Dashboard Template
+# Admin Dashboard Template with Upload Manager for Logo and Pictures
 ADMIN_HTML = """
 <!DOCTYPE html>
 <html lang="en">
@@ -393,28 +418,122 @@ ADMIN_HTML = """
     <title>Admin Dashboard - Kasuwar Kano</title>
     <style>
         body { background-color: #0a0a0a; color: #fff; margin: 0; padding: 30px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; flex-direction: column; align-items: center; }
-        .dashboard-container { width: 100%; max-width: 900px; background: #161616; padding: 30px; border-radius: 16px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(255,20,147,0.15); }
-        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+        .dashboard-container { width: 100%; max-width: 900px; background: #161616; padding: 30px; border-radius: 16px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(255,20,147,0.15); margin-bottom: 30px; }
+        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid #333; padding-bottom: 15px; }
         h2 { color: #ff1493; margin: 0; }
         .btn-group { display: flex; gap: 10px; }
         .action-btn { background: #ff1493; color: #fff; padding: 10px 16px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; border: none; cursor: pointer; transition: 0.3s; }
         .action-btn:hover { background: #e00b82; }
         .logout-btn { background: #333; }
         .logout-btn:hover { background: #444; }
+        
+        /* Upload Form Grid Styles */
+        .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        .upload-card { background: #111; border: 1px solid #333; padding: 20px; border-radius: 10px; }
+        .upload-card h3 { color: #ff1493; margin-top: 0; font-size: 16px; }
+        label { display: block; font-size: 12px; font-weight: bold; color: #ccc; margin-bottom: 6px; }
+        input[type="file"], input[type="text"] { width: 100%; padding: 10px; margin-bottom: 12px; border-radius: 6px; border: 1px solid #444; background: #000; color: #fff; font-size: 13px; box-sizing: border-box; }
+        input[type="file"] { padding: 6px; }
+        .preview-img { width: 60px; height: 60px; object-fit: cover; border-radius: 50%; border: 2px solid #ff1493; margin-top: 5px; }
+        .preview-box { width: 100%; height: 80px; object-fit: cover; border-radius: 6px; border: 1px solid #444; margin-top: 5px; }
+        
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #222; font-size: 14px; }
         th { color: #ff1493; background: #111; }
         td { color: #ccc; }
         .no-data { text-align: center; color: #666; padding: 40px; }
+        .success-msg { background: rgba(46, 204, 113, 0.15); color: #2ecc71; padding: 12px; border-radius: 6px; margin-bottom: 20px; font-weight: bold; text-align: center; border: 1px solid #2ecc71; }
     </style>
 </head>
 <body>
     <div class="dashboard-container">
         <div class="header-row">
+            <h2>🖼️ Website Media & Image Upload Manager</h2>
+            <div class="btn-group">
+                <a href="/admin/logout" class="action-btn logout-btn">Logout</a>
+            </div>
+        </div>
+
+        {% if msg %}
+            <div class="success-msg">{{ msg }}</div>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">
+            <div class="upload-grid">
+                <!-- Logo Upload -->
+                <div class="upload-card">
+                    <h3>1. Brand Logo</h3>
+                    <label>Upload Logo (Circle/Square)</label>
+                    <input type="file" name="logo">
+                    {% if logo_url %}
+                        <img src="{{ logo_url }}" class="preview-img" alt="Logo Preview">
+                    {% endif %}
+                </div>
+
+                <!-- Gallery 1 (House) -->
+                <div class="upload-card">
+                    <h3>2. Gallery Item 1 (House)</h3>
+                    <label>Upload Image</label>
+                    <input type="file" name="img1">
+                    <label>Caption Text</label>
+                    <input type="text" name="caption1" value="{{ caption1 }}">
+                    {% if img1 %}
+                        <img src="{{ img1 }}" class="preview-box" alt="Img 1">
+                    {% endif %}
+                </div>
+
+                <!-- Gallery 2 (Land) -->
+                <div class="upload-card">
+                    <h3>3. Gallery Item 2 (Land)</h3>
+                    <label>Upload Image</label>
+                    <input type="file" name="img2">
+                    <label>Caption Text</label>
+                    <input type="text" name="caption2" value="{{ caption2 }}">
+                    {% if img2 %}
+                        <img src="{{ img2 }}" class="preview-box" alt="Img 2">
+                    {% endif %}
+                </div>
+
+                <!-- Gallery 3 (Self/Office) -->
+                <div class="upload-card">
+                    <h3>4. Gallery Item 3 (Personal/Other)</h3>
+                    <label>Upload Image</label>
+                    <input type="file" name="img3">
+                    <label>Caption Text</label>
+                    <input type="text" name="caption3" value="{{ caption3 }}">
+                    {% if img3 %}
+                        <img src="{{ img3 }}" class="preview-box" alt="Img 3">
+                    {% endif %}
+                </div>
+
+                <!-- Gallery 4 (Shop/Extra) -->
+                <div class="upload-card" style="grid-column: span 2;">
+                    <h3>5. Gallery Item 4 (Shop/Extra)</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label>Upload Image</label>
+                            <input type="file" name="img4">
+                            <label>Caption Text</label>
+                            <input type="text" name="caption4" value="{{ caption4 }}">
+                        </div>
+                        <div>
+                            {% if img4 %}
+                                <img src="{{ img4 }}" class="preview-box" alt="Img 4" style="height: 100px;">
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="action-btn" style="width: 100%; padding: 14px; font-size: 16px; margin-top: 10px;">💾 Save & Update Website Images</button>
+        </form>
+    </div>
+
+    <div class="dashboard-container">
+        <div class="header-row">
             <h2>📊 Customer Leads Dashboard</h2>
             <div class="btn-group">
                 <a href="/admin/export" class="action-btn">📥 Download CSV</a>
-                <a href="/admin/logout" class="action-btn logout-btn">Logout</a>
             </div>
         </div>
         
@@ -449,7 +568,8 @@ ADMIN_HTML = """
             </tbody>
         </table>
     </div>
-    <div style="margin-top: 20px;">
+
+    <div style="margin-bottom: 40px;">
         <a href="/" style="color: #888; text-decoration: none; font-size: 14px;">← Komawa Gida (Back to Website)</a>
     </div>
 </body>
@@ -458,7 +578,18 @@ ADMIN_HTML = """
 
 @app.route('/')
 def index():
-    return render_template_string(HOME_HTML)
+    return render_template_string(
+        HOME_HTML,
+        logo_url=get_content('logo_url'),
+        img1=get_content('img1'),
+        caption1=get_content('caption1'),
+        img2=get_content('img2'),
+        caption2=get_content('caption2'),
+        img3=get_content('img3'),
+        caption3=get_content('caption3'),
+        img4=get_content('img4'),
+        caption4=get_content('caption4')
+    )
 
 @app.route('/submit-lead', methods=['POST'])
 def submit_lead():
@@ -492,18 +623,54 @@ def admin_login():
             error = 'Incorrect password. Please use kasuwar kano admin.'
     return render_template_string(LOGIN_HTML, error=error)
 
-@app.route('/admin/dashboard')
+@app.route('/admin/dashboard', methods=['GET', 'POST'])
 def admin_dashboard():
     if not session.get('admin_logged'):
         return redirect(url_for('admin_login'))
     
+    msg = None
+    if request.method == 'POST':
+        # Handle Logo Upload
+        logo_file = request.files.get('logo')
+        if logo_file and logo_file.filename:
+            logo_data = base64.b64encode(logo_file.read()).decode('utf-8')
+            logo_mime = logo_file.mimetype or 'image/jpeg'
+            set_content('logo_url', f"data:{logo_mime};base64,{logo_data}")
+
+        # Handle Gallery Images and Captions
+        for i in range(1, 5):
+            img_file = request.files.get(f'img{i}')
+            if img_file and img_file.filename:
+                img_data = base64.b64encode(img_file.read()).decode('utf-8')
+                img_mime = img_file.mimetype or 'image/jpeg'
+                set_content(f'img{i}', f"data:{img_mime};base64,{img_data}")
+            
+            caption_text = request.form.get(f'caption{i}')
+            if caption_text is not None:
+                set_content(f'caption{i}', caption_text)
+
+        msg = "An nasara ɗora hotuna da gyara shafin!"
+
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM leads ORDER BY id DESC')
     leads = cursor.fetchall()
     conn.close()
 
-    return render_template_string(ADMIN_HTML, leads=leads)
+    return render_template_string(
+        ADMIN_HTML,
+        leads=leads,
+        msg=msg,
+        logo_url=get_content('logo_url'),
+        img1=get_content('img1'),
+        caption1=get_content('caption1'),
+        img2=get_content('img2'),
+        caption2=get_content('caption2'),
+        img3=get_content('img3'),
+        caption3=get_content('caption3'),
+        img4=get_content('img4'),
+        caption4=get_content('caption4')
+    )
 
 @app.route('/admin/export')
 def export_csv():
