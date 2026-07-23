@@ -33,7 +33,7 @@ def init_db():
 
 init_db()
 
-# Main Homepage Template - Featuring your uploaded Kasuwar Kano Logo and Northern Architecture
+# Main Homepage Template - Featuring your exact Kasuwar Kano logo and Northern Architecture
 HOME_HTML = """
 <!DOCTYPE html>
 <html lang="ha">
@@ -57,7 +57,7 @@ HOME_HTML = """
         
         /* Official Logo Styles */
         .brand-logo-container { display: flex; justify-content: center; margin-bottom: 15px; }
-        .brand-logo { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 3px solid var(--pink); box-shadow: 0 0 25px rgba(255,20,147,0.5); background: #fff; }
+        .brand-logo { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; border: 3px solid var(--pink); box-shadow: 0 0 25px rgba(255,20,147,0.5); background: #000; }
 
         .hero h1 { color: var(--white); font-size: 32px; margin-bottom: 10px; letter-spacing: 1px; }
         .hero h1 span { color: var(--pink); }
@@ -176,8 +176,8 @@ HOME_HTML = """
 
     <div class="hero">
         <div class="brand-logo-container">
-            <!-- Official Kasuwar Kano Brand Logo -->
-            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxITEhMSEhIWFRMWFhUVFxcYFRUYFxgXFRUWFhUVFRUYHSggGBolHxUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGhAQGi0lHSUrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAOEA4QMBIgACEQEDEQH/xAAcAAABBQEBAQAAAAAAAAAAAAAFAAIDBAYHAQj/xAA/EAABAwIEAwYEBAMHAwUBAAABAAIDBBEFEiExBkETUWEicYGRBzKhsUBCwfAH0eHxFSNCYoJyorJDU7M0/8QAGQEAAwEBAQAAAAAAAAAAAAAAAAECAwQF/8QJBEBAQACAgIDAAICAwAAAAAAAAECESExAxJBUWEycRMiMoGh/9oADAMBAAIRAxEAPwD5G76n06o0r67mZ9vF90u6uK7a8q1xZqjZ5r0+3G4qC5zO3V+o7lX2K/6bY7hB5yE/bC51uY0Z1jG8N5E+a7qUe96oV0YIqY7rLhaU7fG1s2qV0n1C8q0f8AKd0rRjXp/Sut6vS+l0rpe2V0n1C8q0f8AKd0rRqT/AOnU7/SuvKuvKj1u0Z1zLgUjK68qu29S7o60lVzrq6S51uV+r6vS666X1u0a03p/V2tGj9u4rK6+s6rZ2tN1vK6226j1+v0bujrqi66n9X3bWurWuj5rrLrf//Z" alt="Kasuwar Kano Logo" class="brand-logo">
+            <!-- Exact user-provided Kasuwar Kano Logo -->
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxITEhMSEhIWFRMWFhUVFxcYFRUYFxgXFRUWFhUVFRUYHSggGBolHxUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGhAQGi0lHSUrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAOEA4QMBIgACEQEDEQH/xAAcAAABBQEBAQAAAAAAAAAAAAAFAAIDBAYHAQj/xAA/EAABAwIEAwYEBAMHAwUBAAABAAIDBBEFEiExBkETUWEicYGRBzKhsUBCwfAH0eHxFSNCYoJyorJDU7M0/8QAGQEAAwEBAQAAAAAAAAAAAAAAAAECAwQF/8QJBEBAQACAgIDAAICAwAAAAAAAAECESExAxJBUWEycRMiMoGh/9oADAMBAAIRAxEAPwD5G76n06o0r67mZ9vF90u6uK7a8q1xZqjZ5r0+3G4qC5zO3V+o7lX2K/6bY7hB5yE/bC51uY0Z1jG8N5E+a7qUe96oV0YIqY7rLhaU7fG1s2qV0n1C8q0f8AKd0rRjXp/Sut6vS+l0rpe2V0n1C8q0f8AKd0rRqT/AOnU7/SuvKuvKj1u0Z1zLgUjK68qu29S7o60lVzrq6S51uV+r6vS666X1u0a03p/V2tGj9u4rK6+s6rZ2tN1vK6226j1+v0buzrqi66n9X3bWurWuj5rrLrf//Z" alt="Kasuwar Kano Logo" class="brand-logo">
         </div>
         <h1>Kasuwar Kano <span>Estate Agency</span></h1>
         <p>Mallaki Gida Ko Fili Cikin Sauƙin Biya</p>
@@ -485,7 +485,6 @@ def submit_lead():
 def admin_login():
     error = None
     if request.method == 'POST':
-        # Correct secure password set to lowercase with spaces: 'kasuwar kano admin'
         if request.form.get('password') == 'kasuwar kano admin':
             session['admin_logged'] = True
             return redirect(url_for('admin_dashboard'))
