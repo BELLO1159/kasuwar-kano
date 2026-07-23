@@ -33,7 +33,7 @@ def init_db():
 
 init_db()
 
-# Main Homepage Template - With Logo, Hausa Fixed, Admin Password, and Property Image Gallery
+# Main Homepage Template - With Logo, Hausa Fixed, Admin Password 'Kasuwar Kano Admin', and Property Image Gallery
 HOME_HTML = """
 <!DOCTYPE html>
 <html lang="ha">
@@ -111,12 +111,6 @@ HOME_HTML = """
         .footer-info { text-align: center; padding: 30px 20px 60px 20px; color: #aaa; font-size: 14px; border-top: 1px solid #222; width: 100%; max-width: 650px; }
         .footer-info p { margin: 8px 0; }
         .footer-info a { color: var(--pink); text-decoration: none; }
-
-        .floating-buttons { position: fixed; bottom: 25px; right: 25px; display: flex; flex-direction: column; gap: 12px; z-index: 1000; }
-        .float-btn { width: 55px; height: 55px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 26px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); text-decoration: none; transition: transform 0.3s; }
-        .float-btn:hover { transform: scale(1.1); }
-        .whatsapp-float { background-color: #25d366; color: white; }
-        .call-float { background-color: #3498db; color: white; }
     </style>
     <script>
         function updateCalculator() {
@@ -346,4 +340,199 @@ HOME_HTML = """
         <p>📞 <b>09066073407</b></p>
         <p>📍 <b>Goron Dutse, Maiyari Plaza, Kano</b></p>
         <p style="margin-top: 15px;"><a href="/admin" style="color: var(--pink); font-size: 13px; font-weight: bold;">🔐 Admin Panel Dashboard</a></p>
-  
+    </div>
+
+</body>
+</html>
+"""
+
+# Admin Login Template with Password 'Kasuwar Kano Admin'
+LOGIN_HTML = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Kasuwar Kano</title>
+    <style>
+        body { background-color: #0a0a0a; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .login-box { background: #161616; padding: 40px; border-radius: 16px; border: 1px solid #333; width: 100%; max-width: 400px; box-shadow: 0 10px 30px rgba(255,20,147,0.15); text-align: center; }
+        h2 { color: #ff1493; margin-top: 0; margin-bottom: 25px; }
+        label { display: block; text-align: left; font-size: 13px; font-weight: bold; color: #ccc; margin-bottom: 8px; }
+        input { width: 100%; padding: 14px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #444; background: #000; color: #fff; font-size: 15px; box-sizing: border-box; }
+        input:focus { border-color: #ff1493; outline: none; }
+        button { width: 100%; background-color: #ff1493; color: #fff; font-weight: bold; padding: 14px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; transition: 0.3s; }
+        button:hover { background-color: #e00b82; }
+        .error { color: #ff4d4d; font-size: 13px; margin-bottom: 15px; }
+        .back-link { display: block; margin-top: 20px; color: #888; text-decoration: none; font-size: 13px; }
+        .back-link:hover { color: #ff1493; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>🔐 Admin Portal</h2>
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+        <form method="POST">
+            <label>Admin Password</label>
+            <input type="password" name="password" placeholder="Enter password" required autofocus>
+            <button type="submit">Login</button>
+        </form>
+        <a href="/" class="back-link">← Komawa Gida (Back to Home)</a>
+    </div>
+</body>
+</html>
+"""
+
+# Admin Dashboard Template
+ADMIN_HTML = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Kasuwar Kano</title>
+    <style>
+        body { background-color: #0a0a0a; color: #fff; margin: 0; padding: 30px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; flex-direction: column; align-items: center; }
+        .dashboard-container { width: 100%; max-width: 900px; background: #161616; padding: 30px; border-radius: 16px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(255,20,147,0.15); }
+        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+        h2 { color: #ff1493; margin: 0; }
+        .btn-group { display: flex; gap: 10px; }
+        .action-btn { background: #ff1493; color: #fff; padding: 10px 16px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; border: none; cursor: pointer; transition: 0.3s; }
+        .action-btn:hover { background: #e00b82; }
+        .logout-btn { background: #333; }
+        .logout-btn:hover { background: #444; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #222; font-size: 14px; }
+        th { color: #ff1493; background: #111; }
+        td { color: #ccc; }
+        .no-data { text-align: center; color: #666; padding: 40px; }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header-row">
+            <h2>📊 Customer Leads Dashboard</h2>
+            <div class="btn-group">
+                <a href="/admin/export" class="action-btn">📥 Download CSV</a>
+                <a href="/admin/logout" class="action-btn logout-btn">Logout</a>
+            </div>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Property Type</th>
+                    <th>Location / Budget</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lead in leads %}
+                <tr>
+                    <td>{{ lead[0] }}</td>
+                    <td>{{ lead[9] }}</td>
+                    <td style="color: #fff; font-weight: bold;">{{ lead[1] }}</td>
+                    <td><a href="tel:{{ lead[2] }}" style="color: #2ecc71; text-decoration: none;">{{ lead[2] }}</a></td>
+                    <td>{{ lead[4] }}</td>
+                    <td>{{ lead[5] }}<br><small style="color: #ff1493;">{{ lead[6] }}</small></td>
+                    <td>{{ lead[7] }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7" class="no-data">Babu wani saƙo ko buƙata a yanzu (No leads recorded yet).</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div style="margin-top: 20px;">
+        <a href="/" style="color: #888; text-decoration: none; font-size: 14px;">← Komawa Gida (Back to Website)</a>
+    </div>
+</body>
+</html>
+"""
+
+@app.route('/')
+def index():
+    return render_template_string(HOME_HTML)
+
+@app.route('/submit-lead', methods=['POST'])
+def submit_lead():
+    name = request.form.get('name')
+    phone = request.form.get('phone')
+    whatsapp = request.form.get('whatsapp')
+    property_type = request.form.get('property_type')
+    location = request.form.get('location')
+    budget = request.form.get('budget')
+    message = request.form.get('message')
+
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    cursor.execute('''
+        INSERT INTO leads (name, phone, whatsapp, property_type, location, budget, message)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    ''', (name, phone, whatsapp, property_type, location, budget, message))
+    conn.commit()
+    conn.close()
+
+    return '', 204
+
+@app.route('/admin', methods=['GET', 'POST'])
+def admin_login():
+    error = None
+    if request.method == 'POST':
+        # Correct secure password set to 'Kasuwar Kano Admin'
+        if request.form.get('password') == 'Kasuwar Kano Admin':
+            session['admin_logged'] = True
+            return redirect(url_for('admin_dashboard'))
+        else:
+            error = 'Incorrect password. Please use Kasuwar Kano Admin.'
+    return render_template_string(LOGIN_HTML, error=error)
+
+@app.route('/admin/dashboard')
+def admin_dashboard():
+    if not session.get('admin_logged'):
+        return redirect(url_for('admin_login'))
+    
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM leads ORDER BY id DESC')
+    leads = cursor.fetchall()
+    conn.close()
+
+    return render_template_string(ADMIN_HTML, leads=leads)
+
+@app.route('/admin/export')
+def export_csv():
+    if not session.get('admin_logged'):
+        return redirect(url_for('admin_login'))
+
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM leads ORDER BY id DESC')
+    leads = cursor.fetchall()
+    conn.close()
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(['ID', 'Name', 'Phone', 'WhatsApp', 'Property Type', 'Location', 'Budget', 'Message', 'Status', 'Created At'])
+    for lead in leads:
+        writer.writerow(lead)
+
+    response = Response(output.getvalue(), mimetype='text/csv')
+    response.headers['Content-Disposition'] = 'attachment; filename=kasuwar_kano_leads.csv'
+    return response
+
+@app.route('/admin/logout')
+def admin_logout():
+    session.pop('admin_logged', None)
+    return redirect(url_for('admin_login'))
+
+if __name__ == '__main__':
+    app.run(debug=True)
