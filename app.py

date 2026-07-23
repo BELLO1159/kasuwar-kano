@@ -1,0 +1,310 @@
+import os
+import sqlite3
+from flask import Flask, flash, redirect, render_template_string, request, url_for
+
+app = Flask(__name__)
+app.secret_key = "kasuwar_kano_secret_key"
+
+# Database Setup for Real Estate Leads
+def init_db():
+    conn = sqlite3.connect("kasuwar_kano.db")
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS leads (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            phone TEXT NOT NULL,
+            property_type TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """
+    )
+    conn.commit()
+    conn.close()
+
+init_db()
+
+# HTML Template with Responsive Styling and Property/Logo Placeholders
+HTML_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kasuwar Kano Estate Agency | Modern Townhouses & Land</title>
+    <style>
+        :root {
+            --primary-color: #1b4d3e;
+            --accent-color: #d4af37;
+            --bg-color: #f9f9f6;
+            --text-color: #333333;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            border-bottom: 4px solid var(--accent-color);
+        }
+        header img {
+            max-height: 70px;
+            margin-bottom: 10px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+        }
+        header p {
+            margin: 5px 0 0;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-top: 0;
+        }
+        .property-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .property-item {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .property-item img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background-color: #eef2f0;
+        }
+        .property-details {
+            padding: 1rem;
+        }
+        .property-details h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+        }
+        form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        form input, form select {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1.25rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        form button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.85rem 1.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        form button:hover {
+            background-color: #12352a;
+        }
+        .flash {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            border: 1px solid #c3e6cb;
+            text-align: center;
+            font-weight: 600;
+        }
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #222;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <!-- LOGO PLACEHOLDER: Place your logo file in a 'static' folder and reference it here as url_for('static', filename='your-logo.png') -->
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Mai Tallan Haja Online / Kasuwar Kano Logo" onerror="this.style.display='none'">
+        <h1>Kasuwar Kano Estate Agency</h1>
+        <p>Flexible Monthly Installments on Townhouses & Plots</p>
+    </header>
+
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="flash">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <div class="card">
+            <h2>Featured Northern Townhouses & Properties</h2>
+            <p>Explore our exclusive listings designed with traditional architectural elegance and modern luxury features. Upload your preferred property photos directly to the server folder to display them here.</p>
+            
+            <div class="property-grid">
+                <div class="property-item">
+                    <!-- NORTHERN HOUSE 1 PLACEHOLDER -->
+                    <img src="{{ url_for('static', filename='northern_house_1.jpg') }}" alt="Modern Northern Townhouse">
+                    <div class="property-details">
+                        <h3>Kano City Luxury Villa</h3>
+                        <p>Flexible monthly payment structure available.</p>
+                    </div>
+                </div>
+                <div class="property-item">
+                    <!-- NORTHERN HOUSE 2 PLACEHOLDER -->
+                    <img src="{{ url_for('static', filename='northern_house_2.jpg') }}" alt="Estate Plot & Duplex">
+                    <div class="property-details">
+                        <h3>Estate Plot & Suburbs Unit</h3>
+                        <p>Secure residential community layout.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Book a Property Consultation / Inquiry</h2>
+            <form method="POST" action="/">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" required placeholder="Enter your full name">
+
+                <label for="phone">Phone Number (WhatsApp / Mobile):</label>
+                <input type="tel" id="phone" name="phone" required placeholder="e.g., 0803XXXXXXXX">
+
+                <label for="property_type">Interested Property Package:</label>
+                <select id="property_type" name="property_type">
+                    <option value="Townhouse - Monthly Installment">Townhouse - Monthly Installment Plan</option>
+                    <option value="Land Plot - Kano Suburbs">Land Plot - Kano Suburbs</option>
+                    <option value="Commercial Space">Commercial Space</option>
+                </select>
+
+                <button type="submit">Submit Inquiry</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Kasuwar Kano Estate Agency. Powered by Mai Tallan Haja Online.</p>
+    </footer>
+</body>
+</html>
+"""
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    if request.method == "POST":
+        name = request.form.get("name")
+        phone = request.form.get("phone")
+        property_type = request.form.get("property_type")
+
+        if name and phone:
+            conn = sqlite3.connect("kasuwar-kano.db")
+            cursor = conn.cursor()
+            cursor.execute(
+                "INSERT INTO leads (name, phone, property_type) VALUES (?, ?, ?)",
+                (name, phone, property_type)
+            )
+            conn.commit()
+            conn.close()
+            flash("Thank you! Your inquiry has been received. Our agency representative will contact you shortly.")
+            return redirect(url_for("index"))
+
+    return render_template_string(HTML_TEMPLATE)
+
+@app.route("/admin")
+def admin():
+    conn = sqlite3.connect("kasuwar-kano.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, name, phone, property_type, created_at FROM leads ORDER BY created_at DESC")
+    leads = cursor.fetchall()
+    conn.close()
+
+    html = """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Admin Dashboard - Kasuwar Kano</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f4f4f4; }
+            .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+            h2 { color: #1b4d3e; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+            th { background-color: #1b4d3e; color: white; }
+            tr:nth-child(even) { background-color: #f9f9f9; }
+            .back-link { display: inline-block; margin-bottom: 15px; color: #1b4d3e; text-decoration: none; font-weight: bold; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <a class="back-link" href="/">&larr; Back to Website</a>
+            <h2>Lead Capture Dashboard</h2>
+            <p>List of clients who requested property details or installment plans:</p>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Property Choice</th>
+                    <th>Date</th>
+                </tr>
+                {% for lead in leads %}
+                <tr>
+                    <td>{{ lead[0] }}</td>
+                    <td>{{ lead[1] }}</td>
+                    <td>{{ lead[2] }}</td>
+                    <td>{{ lead[3] }}</td>
+                    <td>{{ lead[4] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </body>
+    </html>
+    """
+    return render_template_string(html, leads=leads)
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
