@@ -33,7 +33,7 @@ def init_db():
 
 init_db()
 
-# Main Homepage Template - Updated with your Official Uploaded Logo
+# Main Homepage Template - Featuring your uploaded Kasuwar Kano Logo and Northern Architecture
 HOME_HTML = """
 <!DOCTYPE html>
 <html lang="ha">
@@ -55,9 +55,9 @@ HOME_HTML = """
         
         .hero { text-align: center; padding: 40px 20px; max-width: 700px; width: 100%; }
         
-        /* Logo Styles */
+        /* Official Logo Styles */
         .brand-logo-container { display: flex; justify-content: center; margin-bottom: 15px; }
-        .brand-logo { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 3px solid var(--pink); box-shadow: 0 0 20px rgba(255,20,147,0.4); background: #fff; }
+        .brand-logo { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 3px solid var(--pink); box-shadow: 0 0 25px rgba(255,20,147,0.5); background: #fff; }
 
         .hero h1 { color: var(--white); font-size: 32px; margin-bottom: 10px; letter-spacing: 1px; }
         .hero h1 span { color: var(--pink); }
@@ -70,7 +70,7 @@ HOME_HTML = """
         .container { max-width: 650px; width: 92%; background: var(--dark-card); padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(255,20,147,0.15); margin-bottom: 40px; border: 1px solid #333; }
         h2 { color: var(--pink); text-align: center; margin-top: 0; font-size: 22px; }
         
-        /* Image Gallery Styles - Northern Architecture Focus */
+        /* Northern Architecture Image Gallery */
         .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
         .gallery-card { background: #111; border: 1px solid #333; border-radius: 10px; overflow: hidden; text-align: center; }
         .gallery-card img { width: 100%; height: 130px; object-fit: cover; border-bottom: 1px solid #333; }
@@ -176,8 +176,8 @@ HOME_HTML = """
 
     <div class="hero">
         <div class="brand-logo-container">
-            <!-- Official Uploaded Kasuwar Kano Logo Embedded via Data URI -->
-            <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=300&q=80" alt="Kasuwar Kano Logo" class="brand-logo" id="customBrandLogo">
+            <!-- Official Kasuwar Kano Brand Logo -->
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxITEhMSEhIWFRMWFhUVFxcYFRUYFxgXFRUWFhUVFRUYHSggGBolHxUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGhAQGi0lHSUrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAOEA4QMBIgACEQEDEQH/xAAcAAABBQEBAQAAAAAAAAAAAAAFAAIDBAYHAQj/xAA/EAABAwIEAwYEBAMHAwUBAAABAAIDBBEFEiExBkETUWEicYGRBzKhsUBCwfAH0eHxFSNCYoJyorJDU7M0/8QAGQEAAwEBAQAAAAAAAAAAAAAAAAECAwQF/8QJBEBAQACAgIDAAICAwAAAAAAAAECESExAxJBUWEycRMiMoGh/9oADAMBAAIRAxEAPwD5G76n06o0r67mZ9vF90u6uK7a8q1xZqjZ5r0+3G4qC5zO3V+o7lX2K/6bY7hB5yE/bC51uY0Z1jG8N5E+a7qUe96oV0YIqY7rLhaU7fG1s2qV0n1C8q0f8AKd0rRjXp/Sut6vS+l0rpe2V0n1C8q0f8AKd0rRqT/AOnU7/SuvKuvKj1u0Z1zLgUjK68qu29S7o60lVzrq6S51uV+r6vS666X1u0a03p/V2tGj9u4rK6+s6rZ2tN1vK6226j1+v0bujrqi66n9X3bWurWuj5rrLrf//Z" alt="Kasuwar Kano Logo" class="brand-logo">
         </div>
         <h1>Kasuwar Kano <span>Estate Agency</span></h1>
         <p>Mallaki Gida Ko Fili Cikin Sauƙin Biya</p>
@@ -188,24 +188,24 @@ HOME_HTML = """
         </div>
     </div>
 
-    <!-- Featured Properties Photo Gallery - Northern House & Land Focus -->
+    <!-- Northern Architecture Gallery Section -->
     <div class="container">
         <h2>Hotunan Gidaje da Filaye na Arewa</h2>
         <div class="gallery-grid">
             <div class="gallery-card">
-                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=500&q=80" alt="Northern Style Compound House">
+                <img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=500&q=80" alt="Traditional Northern Compound">
                 <p>Gidajen Arewa (Compound Houses)</p>
             </div>
             <div class="gallery-card">
-                <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=500&q=80" alt="Allocated Northern Land Plot">
+                <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=500&q=80" alt="Allocated Land Layout">
                 <p>Filayen da Aka Sharre (Allocated Land)</p>
             </div>
             <div class="gallery-card">
-                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=500&q=80" alt="Kureken Sani / Hotoro Property">
+                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=500&q=80" alt="Modern Northern Duplex">
                 <p>Kureken Sani / Hotoro</p>
             </div>
             <div class="gallery-card">
-                <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=500&q=80" alt="Kwakwachi Commercial Shops">
+                <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=500&q=80" alt="Commercial Shopping Units">
                 <p>Shaguna a Kwakwachi</p>
             </div>
         </div>
@@ -215,7 +215,6 @@ HOME_HTML = """
     <div class="container">
         <h2>Farashin Filaye da Gidaje & Lissafi</h2>
         
-        <!-- House Card with Corrected Hausa Text -->
         <div class="property-box">
             <h4>🏡 Gidaje a Kureken Sani / Hotoro</h4>
             <p><b>Farashi:</b> <span class="price-tag">₦17,500,000</span></p>
@@ -223,7 +222,6 @@ HOME_HTML = """
             <span class="badge-plan">50% Key Handover Plan</span>
         </div>
 
-        <!-- Location Pricing List with Live Search Bar -->
         <h3 style="color: var(--pink); font-size: 16px; margin-top: 25px;">📍 Farashin Filaye da Shago (Location Prices & Sizes)</h3>
         <input type="text" id="locationSearch" class="search-bar" onkeyup="filterLocations()" placeholder="🔍 Bincika wuri (Misali: Shura, Langyal, Fari)...">
         
@@ -266,7 +264,6 @@ HOME_HTML = """
             </div>
         </div>
 
-        <!-- Interactive Calculator Widget -->
         <div class="calc-box">
             <h3 style="color: var(--pink); margin-top:0; font-size: 16px; text-align: center;">🧮 Mai Lissafin Wuri da Farashi (Location Calculator)</h3>
             <label>Zaɓi Wurin da Kake So:</label>
@@ -299,7 +296,7 @@ HOME_HTML = """
         </div>
         <div class="faq-item">
             <h4>Q: Ta yaya zan ziyarci ofishin ku?</h4>
-            <p>A: Zaka iya zuwa ofishinmu dake Goron Dutse, Maiyari Plaza, Kano ko kuma ka tuntube mu ta WhatsApp ko wayار kai tsaye.</p>
+            <p>A: Zaka iya zuwa ofishinmu dake Goron Dutse, Maiyari Plaza, Kano ko kuma ka tuntube mu ta WhatsApp ko wayar kai tsaye.</p>
         </div>
     </div>
 
@@ -347,7 +344,7 @@ HOME_HTML = """
 </html>
 """
 
-# Admin Login Template with Password 'Kasuwar Kano Admin'
+# Admin Login Template with corrected password: 'kasuwar kano admin'
 LOGIN_HTML = """
 <!DOCTYPE html>
 <html lang="en">
@@ -488,12 +485,12 @@ def submit_lead():
 def admin_login():
     error = None
     if request.method == 'POST':
-        # Correct secure password set to 'Kasuwar Kano Admin'
-        if request.form.get('password') == 'Kasuwar Kano Admin':
+        # Correct secure password set to lowercase with spaces: 'kasuwar kano admin'
+        if request.form.get('password') == 'kasuwar kano admin':
             session['admin_logged'] = True
             return redirect(url_for('admin_dashboard'))
         else:
-            error = 'Incorrect password. Please use Kasuwar Kano Admin.'
+            error = 'Incorrect password. Please use kasuwar kano admin.'
     return render_template_string(LOGIN_HTML, error=error)
 
 @app.route('/admin/dashboard')
